@@ -1,7 +1,6 @@
 #include<iostream>
 #include<deque>
-#include<queue>
-#include<vector>
+
 using namespace std;
 int main(){
     deque<int> d;
