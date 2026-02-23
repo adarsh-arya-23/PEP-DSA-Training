@@ -1,4 +1,4 @@
-// Backtracking: Undoing the previous step and moving to previous part.
+// Backtracking: undoing the previous step and moving to previous part.
 /*
 
 Leetcode  BrutForce Approach:- 37. Sudoku Solver
