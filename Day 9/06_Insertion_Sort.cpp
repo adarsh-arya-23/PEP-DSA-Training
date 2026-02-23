@@ -16,3 +16,6 @@ int main(){
         cout<<v[i]<<" ";
     }
 }
+/*
+complexity: O(n^2)
+*/
