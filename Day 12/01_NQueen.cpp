@@ -1,56 +1,80 @@
-#include <iostream>
-#include <vector>
+/*
+
+Approach: Backtracking
+1. We will create a board of size n x n and initialize it with '.' to represent empty spaces.
+2. We will use a recursive function to try placing queens row by row.
+3. For each row, we will check if placing a queen in a particular column is safe by checking the column, upper left diagonal, and upper right diagonal.
+4. If it is safe, we will place the queen and move to the next row.
+5. If we reach the end of the board (row == n), it means we have found a valid solution, and we will add it to our answer list.
+Time Complexity: O(N!), where N is the number of queens. This is because in the worst case, we are trying to place each queen in every column of the board. 
+Space Complexity: O(N^2) for the board and O(N) for the recursion stack, resulting in O(N^2) overall.
+
+*/
+
+#include<iostream>
+#include<vector>
 using namespace std;
+class Solution {
+public:
 
-int n;
-vector<vector<int>> board;
-int solutionCount = 0;
+    bool isSafe(vector<string> &board, int row, int col, int n){
+        for(int j = 0 ;  j < n ; j++){
+            if(board[row][j] == 'Q'){
+               return false;
+            }
+        }
+        for(int i = 0 ; i < n ; i++){
+            if(board[i][col] == 'Q'){
+                return false;
+            }
+        }
+        for(int i = row, j = col ; i >= 0 && j >= 0 ; j--, i--){
+            if(board[i][j] == 'Q'){
+                return false;
+            }
+        }
+        for(int i = row, j = col ; i >= 0 && j < n ; i--, j++){
+            if(board[i][j] == 'Q'){
+                return false;
+            }
+        }
+        return true;
+    }
 
-bool isSafe(int row, int col){
-    for (int i = 0; i < row; i++){
-        if (board[i][col] == 1) return false;
-    }
-    
-    for (int i = row, j = col; i >= 0 && j >= 0; i--, j--){
-        if (board[i][j] == 1) return false;
-    }
-    
-    for (int i = row, j = col; i >= 0 && j < n; i--, j++){
-        if (board[i][j] == 1) return false;
-    }
-    
-    return true;
-}
-
-void solve(int row){
-    if (row == n){
-        solutionCount++;
-        return;
-    }
-    
-    for (int col = 0; col < n; col++){
-        if (isSafe(row, col)){
-            board[row][col] = 1;
-            solve(row + 1);
-            board[row][col] = 0; 
+    void nQueens(vector<string> &board, vector<vector<string>> &answer, int row, int n){
+        if(row == n){
+            answer.push_back({board});
+            return;
+        }
+        for(int j = 0 ; j < n ; j++){
+            if(isSafe(board, row, j, n)){
+                board[row][j] = 'Q';
+                nQueens(board, answer, row+1, n);
+                board[row][j] = '.';
+            }
         }
     }
-}
 
-void printBoard(){
-    for (int i = 0; i < n; i++){
-        for (int j = 0; j < n; j++){
-            cout << (board[i][j] ? "Q " : ". ");
-        }
-        cout << "\n";
+    vector<vector<string>> solveNQueens(int n) {
+        vector<string> board(n, string(n,'.'));
+        vector<vector<string>> answer;
+
+        nQueens(board,answer, 0, n);
+        return answer;
     }
-    cout << "\n";
-}
-
+};
 int main(){
-    cin >> n;
-    board.assign(n, vector<int>(n, 0));
-    solve(0);
-    cout << "Total solutions: " << solutionCount << "\n";
+    int n = 4;
+    Solution sol;
+    vector<vector<string>> result = sol.solveNQueens(n);
+    
+    cout << "Solutions for " << n << "-Queens problem:" << endl;
+    for (const auto& solution : result) {
+        for (const auto& row : solution) {
+            cout << row << endl;
+        }
+        cout << endl; // Separate different solutions
+    }
+    
     return 0;
 }

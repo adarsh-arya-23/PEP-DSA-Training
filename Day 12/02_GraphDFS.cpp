@@ -1,4 +1,3 @@
-// Create a undirected graph traverse it and print it using DFS.
 #include <iostream>
 #include <vector>
 using namespace std;
